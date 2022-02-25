@@ -1,0 +1,3 @@
+https://raw.githubusercontent.com/igorkll/appMarket2/main/shareIT.lua;shareIT.lua
+https://raw.githubusercontent.com/igorkll/appMarket2/main/distget.lua;distget.lua
+https://raw.githubusercontent.com/igorkll/appMarket2/main/ctr.lua;ctr.lua
