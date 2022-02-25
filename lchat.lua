@@ -15,11 +15,11 @@ local gpu = gui.gpu
 local rx, ry = gpu.getResolution()
 
 local userCode = args[2] or su.generateRandomID()
-local appName = "lchat"
+local appName = (args[3] and "lchat:"..args[3]) or "lchat"
 
 if not args[1] then
     print("usage:")
-    print("lchat network [nikname]")
+    print("lchat network [nikname] [chat]")
     return
 end
 
@@ -39,8 +39,11 @@ end)
 
 thread.create(function()
     while true do
-        local _, _, _, message = event.pull("network_message", network.name)
-        logZone.add(message)
+        local _, _, _, message = event.pull("network_message", network.name, appName)
+        if message then
+            logZone.add(message)
+            computer.beep()
+        end
     end
 end)
 
