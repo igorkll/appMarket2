@@ -1,6 +1,7 @@
 local fs = require("filesystem")
 local su = require("superUtiles")
 local shell = require("shell")
+local event = require("event")
 local serialization = require("serialization")
 
 -----------------------------------
@@ -11,7 +12,9 @@ local arg = {table.unpack(args, 2, #args)}
 -----------------------------------
 
 if args[1] then
-    local code = assert(loadfile(shell.resolve(args[1])))
+    local data = assert(su.getFile(args[1]))
+    data = su.modProgramm(data)
+    local code = assert(load(data))
 
     os.setenv("_", args[1])
     local out = {xpcall(code, debug.traceback, table.unpack(arg))}
