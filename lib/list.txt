@@ -1,3 +1,4 @@
 https://raw.githubusercontent.com/igorkll/appMarket2/main/lib/LibDeflate.lua;LibDeflate.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/lib/md5.lua;md5.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/lib/vcomponent.lua;vcomponent.lua
+https://raw.githubusercontent.com/igorkll/appMarket2/main/lib/box.lua;box.lua
