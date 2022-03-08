@@ -6,3 +6,4 @@ https://raw.githubusercontent.com/igorkll/appMarket2/main/nchat.lua;nchat.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/run.lua;run.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/lchat.lua;lchat.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/vm.lua;vm.lua
+https://raw.githubusercontent.com/igorkll/appMarket2/main/openHacker.lua;openHacker.lua
