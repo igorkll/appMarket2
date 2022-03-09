@@ -1,0 +1,3 @@
+https://raw.githubusercontent.com/igorkll/appMarket2/main/list.txt;/usr/bin
+https://raw.githubusercontent.com/igorkll/appMarket2/main/lib/list.txt;/usr/lib
+https://raw.githubusercontent.com/igorkll/appMarket2/main/rc/list.txt;/etc/rc.d
