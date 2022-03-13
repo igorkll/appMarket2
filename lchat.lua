@@ -28,7 +28,7 @@ if not network then io.stderr:write("this network in not open\n") return end
 
 -------------------------------------------
 
-local main = gui.createScene()
+local main = gui.createScene(0, rx, ry)
 local logZone = main.createLogZone(1, 1, rx, ry - 3)
 local input = main.createInputBox(1, ry - 2, rx, 3, "input", nil, nil, function(str)
     if str then
