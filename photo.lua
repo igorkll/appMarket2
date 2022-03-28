@@ -213,6 +213,7 @@ main.createButton(1, 1, 6, 1, "file", nil, nil, false, nil, nil, nil, function()
 end)
 main.createButton(8, 1, 6, 1, "photo", 0x00FF00, 0xFFFFFF, false, nil, nil, nil, function()
     if camera then
+        gui.status("делаеться фото, подождите")
         local img = photo(depthX, depthY, angle)
         if img then
             image = img
