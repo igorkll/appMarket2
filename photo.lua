@@ -267,8 +267,8 @@ end, true, "angleY", 14)
 settings.createButton(1, 5, 16, 1, "back", 0xFFAA00, 0xFFFFFF, false, nil, nil, nil, function()
     gui.select(main)
 end)
-local pathLabel = main.createLabel(1, 2, 16, 1, "path", 0x00AA00, 0xFFFFFF)
-local cameraLabel = main.createLabel(18, 2, 10, 1, "camera", 0x00AA00, 0xFFFFFF)
+local pathLabel = main.createLabel(1, 2, 24, 1, "path", 0x00AA00, 0xFFFFFF)
+local cameraLabel = main.createLabel(26, 2, 10, 1, "camera", 0x00AA00, 0xFFFFFF)
 
 if args[1] then
     local path = shell.resolve(args[1])
