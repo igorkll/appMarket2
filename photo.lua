@@ -75,7 +75,7 @@ local function photo(depthX, depthY, angle)
         table.insert(image, {})
         local tbl = image[#image]
         for x = -(angleX / 2), angleX / 2, angleX / depthX do
-            local value = camera.distance(-math.rad(x), -math.rad(y))
+            local value = camera.distance(math.rad(x), -math.rad(y))
             table.insert(tbl, value)
         end
     end
@@ -185,9 +185,11 @@ local function ioMenager(num)
                 imagePath = path
             end
         end
+        gui.redraw()
     elseif num == 2 then
         if not imagePath then
             ioMenager(1)
+            return
         end
         funcExecute(savePhoto, imagePath)
     elseif num == 3 then
@@ -200,11 +202,11 @@ local function ioMenager(num)
                 metadata = calculate(image)
             end
         end
+        gui.redraw()
     elseif num == 4 then
         image = nil
         imagePath = nil
     end
-    gui.redraw()
 end
 
 main.createButton(1, 1, 6, 1, "file", nil, nil, false, nil, nil, nil, function()
