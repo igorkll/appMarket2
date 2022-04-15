@@ -104,7 +104,7 @@ local function func()
 
                 local text = ""
                 for i = 1, unicode.len(data.text) do
-                    text = text .. "█"
+                    text = text .. "▌"
                 end
 
                 obj.setText(text)
