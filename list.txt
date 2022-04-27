@@ -9,3 +9,4 @@ https://raw.githubusercontent.com/igorkll/appMarket2/main/vm.lua;vm.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/openHacker.lua;openHacker.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/photo.lua;photo.lua
 https://raw.githubusercontent.com/igorkll/appMarket2/main/controller.lua;controller.lua
+https://raw.githubusercontent.com/igorkll/appMarket2/main/nanix.lua;nanix.lua
