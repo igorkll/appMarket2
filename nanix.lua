@@ -60,6 +60,9 @@ local function nanoCall(...)
     ::start::
     local dat = {pcall(...)}
     if not dat[1] then
+        if type(dat[2]) == "table" and dat[2].reason == "terminated" then
+            gui.exit()
+        end
         noConnection()
         goto start
     end
