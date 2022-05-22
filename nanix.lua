@@ -218,6 +218,7 @@ local function createStr(str)
     end
     str = table.concat(strs, ", ")
     str = unicode.sub(str, 1, buttons[1].sizeX - 17)
+    if str == "" then return false end
     return str
 end
 
