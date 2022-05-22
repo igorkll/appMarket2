@@ -3,6 +3,7 @@ local gui = require("guix").create()
 local serialization = require("serialization")
 local su = require("superUtiles")
 local fs = require("filesystem")
+local unicode = require("unicode")
 
 --------------------------------------------
 
@@ -41,6 +42,9 @@ local function statusOff()
     end
 end
 
+local rx, ry = gui.gpu.getResolution()
+local listsStart = rx - 45
+
 --------------------------------------------
 
 local connectOldScene, inputsCount, isConnection
@@ -70,11 +74,11 @@ local function nanoCall(...)
 end
 
 function connection(back)
-    status("подключения...")
+    status("подключения")
     local ok, inputs2 = pcall(nano.getTotalInputCount)
     --statusOff()
     if ok then
-        inputsCount = inputs2
+        inputsCount = math.floor(inputs2)
         isConnection = true
         if back then gui.select(connectOldScene or main) end
     else
@@ -123,7 +127,7 @@ local updateLabels
 local buttons = {}
 for i = 1, inputsCount do
     local b
-    b = main.createButton(1, i + 2, 32, 1, "", function(state, oldState, button)
+    b = main.createButton(1, i + 2, listsStart - 2, 1, "", function(state, oldState, button)
         if button == 1 then
             winAdd()
 
@@ -185,7 +189,7 @@ for i = 1, inputsCount do
 
             gui.redraw()
         else
-            status("sending information...")
+            status("sending information")
             nanoCall(nano.setInput, i, state)
             cfg.pins[i] = state
             saveCfg()
@@ -205,6 +209,18 @@ function updateLabels()
 end
 updateLabels()
 
+local function createStr(str)
+    str = unicode.sub(str, 2, unicode.len(str) - 1)
+    local strs = {}
+    for _, dat in ipairs(su.split(str, ",")) do
+        local _, d = table.unpack(su.split(dat, "."))
+        table.insert(strs, d)
+    end
+    str = table.concat(strs, ", ")
+    str = unicode.sub(str, 1, buttons[1].sizeX - 17)
+    return str
+end
+
 main.createButton(1, 1, 16, 1, "full upload", function()
     for i = 1, inputsCount do
         status("sending information (pin " .. tostring(i) .. ")")
@@ -215,7 +231,7 @@ end)
 
 main.createButton(18, 1, 16, 1, "download data", function()
     for i = 1, inputsCount do
-        status("getting information (pin " .. tostring(i) .. ")")
+        status("getting information (pin " .. tostring(i) .. "/" .. tostring(inputsCount) .. ")")
         cfg.pins[i] = nanoCall(nano.getInput, i)
         buttons[i].state = cfg.pins[i]
     end
@@ -223,38 +239,66 @@ main.createButton(18, 1, 16, 1, "download data", function()
     gui.select(main)
 end)
 
-local list = main.createList(34, 3, main.sizeX - 34 - 1, main.sizeY - 3 - 12)
+main.createButton(18 + 17, 1, 16, 1, "nscan", function()
+    for i = 1, inputsCount do
+        status("sending information (pin " .. tostring(i) .. "/" .. tostring(inputsCount) .. ")")
+        if cfg.pins[i] then nanoCall(nano.setInput, i, false) end
+    end
+    for i = 1, inputsCount do
+        status("getting information (pin " .. tostring(i) .. "/" .. tostring(inputsCount) .. ")")
+
+        nanoCall(nano.setInput, i, true)
+        cfg.notes[i] = createStr(nanoCall(nano.getActiveEffects))
+        nanoCall(nano.setInput, i, false)
+    end
+    for i = 1, inputsCount do
+        status("sending information (pin " .. tostring(i) .. "/" .. tostring(inputsCount) .. ")")
+        if cfg.pins[i] then nanoCall(nano.setInput, i, true) end
+    end
+    saveCfg()
+    updateLabels()
+    gui.select(main)
+end)
+
+local list = main.createList(listsStart, 3, main.sizeX - listsStart, main.sizeY - 3 - 12)
 list.autoScroll = false
 list.autoRedraw = false
 list.autoRemove = false
-list.soundOn = false
+list.setSoundOn(false)
 list.addStr("ИНСТРУКЦИЯ(обязательна к прочтению)")
-list.addStr("если вам кажиться что произошел рассинхрон - вам не кажеться")
+list.addStr("если вам кажиться что произошел рассинхрон -")
+list.addStr("вам не кажеться")
 list.addStr(string.rep("-", list.sizeX))
-list.addStr("в случаи рассинхрона необходи нажать на кнопку download data")
-list.addStr("чтобы скачать все данные, или нажать full upload чтобы")
+list.addStr("в случаи рассинхрона необходи нажать")
+list.addStr("на кнопку download data")
+list.addStr("чтобы скачать все данные,")
+list.addStr("или нажать full upload чтобы")
 list.addStr("отправить все")
 list.addStr(string.rep("-", list.sizeX))
 list.addStr("все пины сохраняються на диск")
 list.addStr("для изменения состояния нажимайте на кнопки")
 list.addStr(string.rep("-", list.sizeX))
-list.addStr("если программа не будет открываться удалите конфигурационный файл")
+list.addStr("если программа не будет открываться удалите")
+list.addStr("конфигурационный файл")
 list.addStr("(" .. cfgPath .. ") и нажмите download data")
 list.addStr(string.rep("-", list.sizeX))
-list.addStr("во время передачи данных нельзя ходить, иначе программа")
-list.addStr("может зависнуть, если это произошло, закройте ее сочетаниям клавиш")
+list.addStr("во время передачи данных нельзя ходить,")
+list.addStr("иначе программа")
+list.addStr("может зависнуть, если это произошло, ")
+list.addStr("закройте ее сочетаниям клавиш")
 list.addStr("ctrl + alt + c и повторите действия")
 list.addStr(string.rep("-", list.sizeX))
-list.addStr("для упровления заметкой на пин нажмите на его кнопку правой")
+list.addStr("для упровления заметкой на пин")
+list.addStr("нажмите на его кнопку правой")
 list.addStr("кнопкой мыши")
 
-local dataList = main.createList(34, list.posY + list.sizeY + 1, list.sizeX, 9)
+local dataList = main.createList(listsStart, list.posY + list.sizeY + 1, list.sizeX, 9)
 dataList.autoRedraw = false
 dataList.autoRemove = false
-dataList.soundOn = false
+dataList.setSoundOn(false)
 
 local function refreshData()
-    status("пожалуйста подождите...")
+    status("пожалуйста подождите")
 
     dataList.clear()
 
@@ -276,7 +320,7 @@ local function refreshData()
     local effects = nanoCall(nano.getActiveEffects)
     if effects then
         if type(effects) == "table" then effects = serialization.serialize(effects) end
-        dataList.addStr("effects: " .. effects)
+        dataList.addStr("effects: " .. (createStr(effects) or "none"))
     end
 
     local selfInputs = tostring(nanoCall(nano.getSafeActiveInputs))
@@ -294,7 +338,7 @@ local function refreshData()
     dataList.draw()
 end
 
-main.createButton(34, main.sizeY - 1, list.sizeX, 1, "refresh", refreshData)
+main.createButton(listsStart, main.sizeY - 1, list.sizeX, 1, "refresh", refreshData)
 
 refreshData()
 
